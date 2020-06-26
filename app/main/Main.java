@@ -12,6 +12,7 @@ import app.core.useCases.transaction.createTransaction;
 import app.entities.Customer;
 import app.entities.InventoryItem;
 import app.entities.Product;
+import app.entities.Transaction;
 
 public class Main {
   public static void main(String[] args) {
@@ -37,14 +38,29 @@ public class Main {
         if(repeatCustomers.size() == 0) {
           System.out.println("There are no repeat customers at this time");
         } else {
-          System.out.println("customers "+ repeatCustomers.get(0).emailAddress);
+          for (Customer customer : repeatCustomers) {
+            System.out.println(customer.firstName+" " + customer.lastName + " has done business with us multiple times");
+          }
         }
         input = scanner.nextLine();
-      case "sal":
-        // code block
+      case "sac":
+        ArrayList<Customer> customers = customerRepo.getTotalCustomers();
+        for (Customer customer : customers) {
+          System.out.println(
+            customer.firstName+ " " + customer.lastName + "- " + customer.emailAddress
+          );
+        }
         input = scanner.nextLine();
       case "tism":
-        break;
+        ArrayList<Transaction> transactions = transactionRepo.getTotalItemsSoldMonthly();
+        double total = 0;
+        for (Transaction transaction : transactions) {
+          total += (transaction.quantity * transaction.product.price);
+          System.out.println(
+            transaction.customer.firstName + " " + transaction.customer.lastName + " bought " + transaction.quantity + " " + transaction.product.name + "\ntotal: " + total
+          );
+        }
+        input = scanner.nextLine();
       case "soi":
         input = scanner.nextLine();
       case "lip":
@@ -119,6 +135,9 @@ public class Main {
         createTransactionCommand.execute(customers.get(i), inventoryItems.get(i).product,
         i);
       }
+      // create transaction by user that has alrady made a purchase
+      createTransactionCommand.execute(customers.get(1), inventoryItems.get(1).product,
+        10);
     return transactionRepository;
   }
 }
