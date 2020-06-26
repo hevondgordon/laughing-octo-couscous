@@ -12,6 +12,6 @@ public abstract class InventoryRepository {
   public abstract InventorySummary getInventorySummary(
     ArrayList<InventoryItem> invItems
   );
-  public abstract void addInventoryItem(InventoryItem inventoryItem);
+  public abstract InventoryItem addInventoryItem(InventoryItem inventoryItem);
   public abstract InventoryItem removeItemFromInventory(InventoryItem inventoryItem);
 }

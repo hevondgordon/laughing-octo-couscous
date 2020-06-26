@@ -39,8 +39,18 @@ public class ConcreteInventoryRepository extends InventoryRepository {
     return new InventorySummary(totalProducts, productCost);
   }
   @Override
-  public void addInventoryItem(InventoryItem inventoryItem) {
-    this.inventory.add(inventoryItem);
+  public InventoryItem addInventoryItem(InventoryItem inventoryItem) {
+    InventoryItem added = null;
+    for (InventoryItem _inventoryItem : inventory) {
+      if(_inventoryItem.product.name.compareTo(inventoryItem.product.name) == 0) {
+        _inventoryItem.quantity += inventoryItem.quantity;
+        added = _inventoryItem;
+      }
+    }
+    if(added == null) {
+      inventory.add(inventoryItem);
+    }
+    return added;
   }
 
   @Override

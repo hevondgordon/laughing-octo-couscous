@@ -1,6 +1,7 @@
 package app.main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import app.concrete.ConcreteCustomerRepository;
@@ -17,9 +18,16 @@ import app.entities.Transaction;
 
 public class Main {
   public static void main(String[] args) {
+    HashMap<String, ConcreteInventoryRepository> inventories = new HashMap<>();
+    inventories.put("StewyTech", new ConcreteInventoryRepository("StewyTech"));
+    inventories.put("OtherTech", new ConcreteInventoryRepository("OtherTech"));
+    inventories.put("OtherTech1", new ConcreteInventoryRepository("OtherTech1"));
+    inventories.put("OtherTech2", new ConcreteInventoryRepository("OtherTech2"));
+    inventories.put("OtherTech3", new ConcreteInventoryRepository("OtherTech3"));
+
     System.out.println("***********SEEDING APPLICATION***********");
     ConcreteCustomerRepository customerRepo = seedCustomers();
-    ConcreteInventoryRepository inventoryRepo = seedInventory();
+    ConcreteInventoryRepository inventoryRepo = seedInventory(inventories.get("StewyTech"));
     ConcreteTransactionRepository transactionRepo = seedTransactions(customerRepo, inventoryRepo);
     System.out.println("***********COMPLETE SEEDING***********\n\n");
     
@@ -30,6 +38,7 @@ public class Main {
     System.out.println("[] - Enter 'tism' to show the total items sold monthly");
     System.out.println("[] - Enter 'soi' to show a snapshot of the inventory");
     System.out.println("[] - Enter 'lip' to list customers and items purchased");
+    System.out.println("[] - Enter 'li' to list the inventory detail for a selected company");
     System.out.println("***********INSTRUCTIONS***************\n\n");
     String input = scanner.nextLine();
     switch(input) {
@@ -82,6 +91,21 @@ public class Main {
         }
         
         input = scanner.nextLine();
+      case "li":
+        System.out.println("Enter the name of the inventory you wish to receive data on");
+        Scanner liScanner = new Scanner(System.in);
+        String inventoryName = liScanner.nextLine();
+        ConcreteInventoryRepository inventory =  inventories.get(inventoryName);
+        InventorySnapshot inventorySnapshot = inventory.getSnapshot();
+        for (InventoryItem inventoryItem : inventorySnapshot.inventoryItems) {
+          System.out.println(
+            inventoryItem.quantity + " " + inventoryItem.product.name + " @ $" + inventoryItem.product.price
+          );
+        }
+        System.out.println(
+         "Total Costs:" + inventorySnapshot.inventorySummary.totalProductCost + "\n" + "Total Products " +inventorySnapshot.inventorySummary.totalProducts
+        );
+        input = scanner.nextLine();
       default:
         input = scanner.nextLine();
     }
@@ -110,7 +134,7 @@ public class Main {
     return customerRepo;
   }
 
-  public static ConcreteInventoryRepository seedInventory() {
+  public static ConcreteInventoryRepository seedInventory(ConcreteInventoryRepository concreteInventoryRepository) {
     Product product1 = new Product(
       "Bag Juice",
       10.50
@@ -128,7 +152,6 @@ public class Main {
     InventoryItem inventoryItem2 = new InventoryItem(product2, 100);
     InventoryItem inventoryItem3 = new InventoryItem(product3, 100);
 
-    ConcreteInventoryRepository concreteInventoryRepository = new ConcreteInventoryRepository("StewyTech");
     addInventoryItem addInventoryItemCommad = new addInventoryItem(concreteInventoryRepository);
     addInventoryItemCommad.execute(inventoryItem1);
     addInventoryItemCommad.execute(inventoryItem2);
@@ -145,12 +168,12 @@ public class Main {
       ArrayList<InventoryItem> inventoryItems = inventoryRepo.getInventoryItems();
       ConcreteTransactionRepository transactionRepository = new ConcreteTransactionRepository(inventoryRepo);
       createTransaction createTransactionCommand = new createTransaction(transactionRepository);
-      for (int i = 1; i < customers.size(); i++) {
+      for (int i = 0; i < customers.size(); i++) {
         System.out.println(
-          customers.get(i).emailAddress + " bought " + (i+1) + " " + inventoryItems.get(i).product.name + "@ " + inventoryItems.get(i).product.price
+          customers.get(i).emailAddress + " bought " + 10 + " " + inventoryItems.get(i).product.name + "@ " + inventoryItems.get(i).product.price
         );
         createTransactionCommand.execute(customers.get(i), inventoryItems.get(i).product,
-        i);
+        10);
       }
       // create transaction by user that has alrady made a purchase
       createTransactionCommand.execute(customers.get(1), inventoryItems.get(1).product,
