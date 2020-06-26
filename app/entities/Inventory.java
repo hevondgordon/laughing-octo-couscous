@@ -18,10 +18,6 @@ public class Inventory {
     return this.inventory;
   }
 
-  public void addInventoryItem(InventoryItem inventoryItem) {
-    this.inventory.add(inventoryItem);
-  }
-
   public void addInventoryItems(ArrayList<InventoryItem> inventoryItems) {
     for (int i = 0; i < inventoryItems.size(); i++) {
       this.inventory.add(inventoryItems.get(i));
@@ -30,16 +26,5 @@ public class Inventory {
 
   public String getCompanyName() {
     return this.companyName;
-  }
-
-  public InventoryItem removeFromInventory(Product product, int quantity) {
-    InventoryItem _inventoryItem = null;
-    for (InventoryItem inventoryItem : inventory) {
-      if (inventoryItem.product.name.compareTo(product.name) == 0) {
-        inventoryItem.quantity -= quantity;
-        _inventoryItem = inventoryItem;
-      }
-    }
-    return _inventoryItem;
   }
 }

@@ -3,7 +3,6 @@ package app.core.useCases.inventory;
 import app.entities.InventoryItem;
 import app.entities.InventorySnapshot;
 import app.entities.InventorySummary;
-import app.entities.Product;
 
 import java.util.ArrayList;
 
@@ -14,5 +13,5 @@ public abstract class InventoryRepository {
     ArrayList<InventoryItem> invItems
   );
   public abstract void addInventoryItem(InventoryItem inventoryItem);
-  public abstract InventoryItem removeItemsFromInventory(Product product, int quantity);
+  public abstract InventoryItem removeItemFromInventory(InventoryItem inventoryItem);
 }

@@ -3,7 +3,7 @@ package app.concrete;
 import app.core.useCases.transaction.TransactionRepository;
 import app.entities.Transaction;
 import app.entities.Customer;
-import app.entities.Inventory;
+import app.entities.InventoryItem;
 import app.entities.Product;
 
 import java.util.ArrayList;
@@ -12,9 +12,11 @@ import java.util.Date;
 
 public class ConcreteTransactionRepository extends TransactionRepository {
   ArrayList<Transaction> transactions;
-  public ConcreteTransactionRepository() {
+  ConcreteInventoryRepository inventoryRepository;
+  public ConcreteTransactionRepository(ConcreteInventoryRepository concreteInventoryRepository) {
     super();
     this.transactions = new ArrayList<>();
+    this.inventoryRepository = concreteInventoryRepository;
   }
   public ArrayList<Transaction> getTotalItemsSoldMonthly() {
     ArrayList<Transaction> transactions = new ArrayList<>();
@@ -48,10 +50,11 @@ public class ConcreteTransactionRepository extends TransactionRepository {
   }
 
   public Transaction createTransaction(Customer customer, Product product,
-    int quantity, Inventory inventory) {
+    int quantity) {
     Transaction transaction = new Transaction(customer, product, quantity);
     this.transactions.add(transaction);
-    inventory.removeFromInventory(product, quantity);
+    InventoryItem inventoryItem = new InventoryItem(product, quantity);
+    inventoryRepository.removeItemFromInventory(inventoryItem);
     return transaction;
   }
 }

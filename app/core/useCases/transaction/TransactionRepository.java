@@ -5,11 +5,10 @@ import app.entities.Transaction;
 import java.util.ArrayList;
 
 import app.entities.Customer;
-import app.entities.Inventory;
 import app.entities.Product;
 public abstract class TransactionRepository {
   public abstract ArrayList<Transaction> getTotalItemsSoldMonthly();
   public abstract ArrayList<Transaction> getTransactions();
   public abstract ArrayList<Transaction> getTransactionsByCustomer(Customer customer);
-  public abstract Transaction createTransaction(Customer customer, Product product, int quantity, Inventory Inventory);
+  public abstract Transaction createTransaction(Customer customer, Product product, int quantity);
 }
