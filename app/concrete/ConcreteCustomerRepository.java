@@ -19,10 +19,13 @@ public class ConcreteCustomerRepository extends CustomerRepository {
     HashMap<String, Boolean> seenBefore = new HashMap<>();
     for (int i = 0; i < transactions.size(); i++) {
       Transaction transaction = transactions.get(i);
-      if (seenBefore.get(transaction.customer.emailAddress)) {
-        repeatCustomers.add(transaction.customer);
+      try {
+        if(seenBefore.get(transaction.customer.emailAddress).equals(true)) {
+          repeatCustomers.add(transaction.customer);
+        }
+      } catch (Exception e) {
+        seenBefore.put(transaction.customer.emailAddress, true);
       }
-      seenBefore.put(transaction.customer.emailAddress, true);
     }
     return repeatCustomers;
   }

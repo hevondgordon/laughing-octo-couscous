@@ -18,7 +18,7 @@ public class Main {
     System.out.println("***********SEEDING APPLICATION***********");
     ConcreteCustomerRepository customerRepo = seedCustomers();
     ConcreteInventoryRepository inventoryRepo = seedInventory();
-    seedTransactions(customerRepo, inventoryRepo);
+    ConcreteTransactionRepository transactionRepo = seedTransactions(customerRepo, inventoryRepo);
     System.out.println("***********COMPLETE SEEDING***********\n\n");
     
     Scanner scanner = new Scanner(System.in);
@@ -32,7 +32,13 @@ public class Main {
     String input = scanner.nextLine();
     switch(input) {
       case "src":
-        // code block
+        ArrayList<Customer> repeatCustomers =
+           customerRepo.getRepeatCustomers(transactionRepo.getTransactions());
+        if(repeatCustomers.size() == 0) {
+          System.out.println("There are no repeat customers at this time");
+        } else {
+          System.out.println("customers "+ repeatCustomers.get(0).emailAddress);
+        }
         input = scanner.nextLine();
       case "sal":
         // code block
@@ -100,7 +106,7 @@ public class Main {
     return concreteInventoryRepository;
   }
 
-  public static void seedTransactions(
+  public static ConcreteTransactionRepository seedTransactions(
     ConcreteCustomerRepository customerRepo, ConcreteInventoryRepository inventoryRepo) {
       ArrayList<Customer> customers = customerRepo.getTotalCustomers();
       ArrayList<InventoryItem> inventoryItems = inventoryRepo.getInventoryItems();
@@ -113,5 +119,6 @@ public class Main {
         createTransactionCommand.execute(customers.get(i), inventoryItems.get(i).product,
         i);
       }
+    return transactionRepository;
   }
 }
