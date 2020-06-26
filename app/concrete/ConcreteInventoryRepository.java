@@ -31,10 +31,12 @@ public class ConcreteInventoryRepository extends InventoryRepository {
   @Override
   public InventorySummary getInventorySummary(ArrayList<InventoryItem> l) {
     int productCost = 0;
+    int totalProducts = 0;
     for (InventoryItem inventoryItem : l) {
       productCost += (inventoryItem.product.price * inventoryItem.quantity);
+      totalProducts += inventoryItem.quantity;
     }
-    return new InventorySummary(l.size(), productCost);
+    return new InventorySummary(totalProducts, productCost);
   }
   @Override
   public void addInventoryItem(InventoryItem inventoryItem) {

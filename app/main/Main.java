@@ -11,6 +11,7 @@ import app.core.useCases.inventory.addInventoryItem;
 import app.core.useCases.transaction.createTransaction;
 import app.entities.Customer;
 import app.entities.InventoryItem;
+import app.entities.InventorySnapshot;
 import app.entities.Product;
 import app.entities.Transaction;
 
@@ -62,8 +63,24 @@ public class Main {
         }
         input = scanner.nextLine();
       case "soi":
+        InventorySnapshot snapshot = inventoryRepo.getSnapshot();
+        for (InventoryItem inventoryItem : snapshot.inventoryItems) {
+          System.out.println(
+            inventoryItem.quantity + " " + inventoryItem.product.name + " @ $" + inventoryItem.product.price
+          );
+        }
+        System.out.println(
+         "Total Costs:" + snapshot.inventorySummary.totalProductCost + "\n" + "Total Products " +snapshot.inventorySummary.totalProducts
+        );
         input = scanner.nextLine();
       case "lip":
+        ArrayList<Transaction> customerTransactions = transactionRepo.getTransactions();
+        for (Transaction transaction : customerTransactions) {
+          System.out.println(
+            transaction.customer.firstName + " " + transaction.customer.lastName + " bought "+ transaction.quantity + " " + transaction.product.name+ " on " + transaction.completedOn.toString()
+          );
+        }
+        
         input = scanner.nextLine();
       default:
         input = scanner.nextLine();
