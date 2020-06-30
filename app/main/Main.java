@@ -52,7 +52,7 @@ public class Main {
             System.out.println(customer.firstName+" " + customer.lastName + " has done business with us multiple times");
           }
         }
-        input = scanner.nextLine();
+        break;
       case "sac":
         ArrayList<Customer> customers = customerRepo.getTotalCustomers();
         for (Customer customer : customers) {
@@ -60,7 +60,7 @@ public class Main {
             customer.firstName+ " " + customer.lastName + "- " + customer.emailAddress
           );
         }
-        input = scanner.nextLine();
+        break;
       case "tism":
         ArrayList<Transaction> transactions = transactionRepo.getTotalItemsSoldMonthly();
         double total = 0;
@@ -70,7 +70,7 @@ public class Main {
             transaction.customer.firstName + " " + transaction.customer.lastName + " bought " + transaction.quantity + " " + transaction.product.name + "\ntotal: " + total
           );
         }
-        input = scanner.nextLine();
+        break;
       case "soi":
         InventorySnapshot snapshot = inventoryRepo.getSnapshot();
         for (InventoryItem inventoryItem : snapshot.inventoryItems) {
@@ -81,7 +81,7 @@ public class Main {
         System.out.println(
          "Total Costs:" + snapshot.inventorySummary.totalProductCost + "\n" + "Total Products " +snapshot.inventorySummary.totalProducts
         );
-        input = scanner.nextLine();
+        break;
       case "lip":
         ArrayList<Transaction> customerTransactions = transactionRepo.getTransactions();
         for (Transaction transaction : customerTransactions) {
@@ -90,7 +90,7 @@ public class Main {
           );
         }
         
-        input = scanner.nextLine();
+        break;
       case "li":
         System.out.println("Enter the name of the inventory you wish to receive data on");
         Scanner liScanner = new Scanner(System.in);
@@ -105,9 +105,7 @@ public class Main {
         System.out.println(
          "Total Costs:" + inventorySnapshot.inventorySummary.totalProductCost + "\n" + "Total Products " +inventorySnapshot.inventorySummary.totalProducts
         );
-        input = scanner.nextLine();
-      default:
-        input = scanner.nextLine();
+        break;
     }
     scanner.close();
   }
@@ -178,6 +176,9 @@ public class Main {
       // create transaction by user that has alrady made a purchase
       createTransactionCommand.execute(customers.get(1), inventoryItems.get(1).product,
         10);
+      System.out.println(
+        customers.get(1).emailAddress + " bought " + 10 + " " + inventoryItems.get(1).product.name + "@ " + inventoryItems.get(1).product.price
+      );
     return transactionRepository;
   }
 }
