@@ -34,7 +34,7 @@ public class Main {
     Scanner scanner = new Scanner(System.in);
     System.out.println("***********INSTRUCTIONS***************");
     System.out.println("[] - Enter 'src' to show all repeated customers");
-    System.out.println("[] - Enter 'sal' to show all customers");
+    System.out.println("[] - Enter 'sac' to show all customers");
     System.out.println("[] - Enter 'tism' to show the total items sold monthly");
     System.out.println("[] - Enter 'soi' to show a snapshot of the inventory");
     System.out.println("[] - Enter 'lip' to list customers and items purchased");
@@ -171,13 +171,13 @@ public class Main {
           customers.get(i).emailAddress + " bought " + 10 + " " + inventoryItems.get(i).product.name + "@ " + inventoryItems.get(i).product.price
         );
         createTransactionCommand.execute(customers.get(i), inventoryItems.get(i).product,
-        10);
+        10+i);
       }
       // create transaction by user that has alrady made a purchase
       createTransactionCommand.execute(customers.get(1), inventoryItems.get(1).product,
-        10);
+        6);
       System.out.println(
-        customers.get(1).emailAddress + " bought " + 10 + " " + inventoryItems.get(1).product.name + "@ " + inventoryItems.get(1).product.price
+        customers.get(1).emailAddress + " bought " + 6 + " " + inventoryItems.get(1).product.name + "@ " + inventoryItems.get(1).product.price
       );
     return transactionRepository;
   }
